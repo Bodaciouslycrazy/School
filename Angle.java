@@ -1,12 +1,14 @@
 public class Angle{
 	
-	private float angle;
+	private double angle;
+	
+	//Contructors
 	
 	public Angle(){
 		angle = 0;
 	}
 	
-	public Angle( float ang ){
+	public Angle( double ang ){
 		angle = wrap(ang);
 	}
 	
@@ -15,7 +17,7 @@ public class Angle{
 	
 	
 	
-	public float get(){
+	public double get(){
 		return angle;
 	}
 	
@@ -25,8 +27,20 @@ public class Angle{
 	
 	
 	
-	public void set(float ang){
+	public double set(double ang){
 		angle = wrap(ang);
+		return get();
+	}
+	
+	
+	//combined getter, modifier. (some people like this syntax instead).
+	public double angle(){
+		return get();
+	}
+	
+	public double angle(double ang){
+		angle = wrap(ang);
+		return get();
 	}
 	
 	
@@ -35,16 +49,29 @@ public class Angle{
 	
 	
 	
+	public String toString(){
+		double num = (get() / ( 2 * Math.PI)) * 360;
+		return num + "";
+	}
+	
+	
+	
+	//STATIC FUNCTIONS
+	
+	
+	
+	//Adds the two angles together and returns a correct angle.
 	public static Angle addAngles(Angle ang1, Angle ang2){
-		float newAng = ang1.get() + ang2.get();
+		double newAng = ang1.get() + ang2.get();
 		
 		return new Angle(newAng);
 	}
 	
 	
 	
-	public static Angle difference( Angle ang1, Angle ang2 ){
-		float newAng = ang1.get() - ang2.get();
+	//distance
+	public static Angle distance( Angle ang1, Angle ang2 ){
+		double newAng = ang1.get() - ang2.get();
 		newAng = Math.abs(newAng);
 		
 		if(newAng > Math.PI)
@@ -55,16 +82,24 @@ public class Angle{
 	
 	
 	
-	//make a bisect funtion?
-	/*public static Angle bisect( Angle ang1, Angle ang2 ){
+	//Bisect
+	//returns the angle between two angles
+	public static Angle bisect(Angle ang1, Angle ang2){
+		double avg = ( ang1.get() + ang2.get() ) * 0.5;
 		
-		float avg = ( ang1.get() + ang2.get() ) / 2.0;
+		Angle newAngle = new Angle( avg );
 		
-	}*/
+		if( distance( ang1, newAngle ).get() > (Math.PI * 0.5) )
+			newAngle = new Angle( avg + Math.PI);
+		
+		return newAngle;
+	}
 	
 	
 	
-	public static float wrap(float ang){
+	//wrap
+	//Returns the same angle between -pi and pi
+	public static double wrap(double ang){
 		while( ang < -Math.PI ){
 			ang += 2 * Math.PI;
 		}
